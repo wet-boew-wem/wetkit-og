@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @file wetkit_og.install
+ * @file
  * Installation scripts for Wetkit Organic Groups.
  */
 
@@ -16,12 +16,12 @@ function wetkit_og_install() {
  * Implements hook_uninstall().
  */
 function wetkit_og_uninstall() {
-
-}
-
-/**
- * Implements hook_update_n().
- */
-function wetkit_og_update_7101(&$sandbox) {
-
+  // Get global variable array.
+  global $conf;
+  foreach (array_keys($conf) as $key) {
+    // Find variables that have the module prefix.
+    if (strpos($key, 'wetkit_og_') === 0) {
+      variable_del($key);
+    }
+  }
 }

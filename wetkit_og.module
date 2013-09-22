@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @file wetkit_og.module
+ * @file
  * Module file for integrating OG with WetKit.
  */
 
@@ -133,8 +133,8 @@ function wetkit_og_node_grants($account, $op) {
     $groups = entity_load('node', array_values(reset($group_ids)));
     foreach ($groups as $group_id => $group) {
 
-      /* check if the user can access unpublished content in this group. If that
-      is correct, access is granted */
+      // Check if the user can access unpublished content in this group
+      // if that is correct, access is granted.
       if (og_user_access_entity('View all unpublished content', 'node', $group)) {
         $grants['workbench_moderation_og'][] = $group_id;
       }
@@ -175,7 +175,7 @@ function wetkit_og_views_query_alter($view, &$query) {
  * Implements hook_entity_info_alter().
  */
 function wetkit_og_entity_info_alter(&$entity_info) {
-  // Alter the og membership label callback to be our own funciton
+  // Alter the og membership label callback.
   $entity_info['og_membership']['label callback'] = 'wetkit_og_og_membership_label';
 }
 
@@ -188,15 +188,19 @@ function wetkit_og_og_membership_label($og_membership) {
     '@entity' => $wrapper->entity->label(),
     '@group' => $wrapper->group->label(),
   );
-  return t('@entity in group @group', $params);
+  return t('@entity is part of group @group', $params);
 }
 
 /**
  * Check if the user is admin of a given organic group.
  *
- * @param  int $uid The user uid
- * @param  int $gid The user gid
- * @return boolean true
+ * @param int $uid
+ *   The user uid
+ * @param int $gid
+ *   The user gid
+ *
+ * @return bool
+ *   Returns a boolean.
  */
 function _wetkit_og_check_user_is_admin_of_group($uid, $gid) {
   $query = db_select('og_users_roles', 'og');
@@ -217,8 +221,11 @@ function _wetkit_og_check_user_is_admin_of_group($uid, $gid) {
 /**
  * Get group ids a given user is admin of.
  *
- * @param  int $uid The user uid
- * @return boolean true
+ * @param int $uid
+ *   The user uid
+ *
+ * @return bool
+ *   Returns group ids.
  */
 function _wetkit_og_get_group_ids_current_user_is_admin_of($uid) {
   $query = db_select('og_users_roles', 'og');
@@ -228,20 +235,22 @@ function _wetkit_og_get_group_ids_current_user_is_admin_of($uid) {
   $result = $query->execute();
   while ($record = $result->fetchAssoc()) {
     $gids[] = $record;
-  } return $gids;
+  }
+  return $gids;
 }
 
 /**
  * Get all groups current user is member of.
  *
- * @return array Associated group ids
+ * @return array
+ *   Associated group ids.
  */
 function _wetkit_og_get_logged_in_user_group_ids() {
   global $user;
   if ($user->uid != 0) {
     $group_id = '+';
     $current_user = user_load($user->uid);
-    $get_group_ids = $current_user->og_user_node['und'];
+    $get_group_ids = $current_user->og_user_node[LANGUAGE_NONE];
     foreach ($get_group_ids as $get_group_id) {
       $group_id .= $get_group_id['target_id'] . '+';
     }
@@ -254,24 +263,28 @@ function _wetkit_og_get_logged_in_user_group_ids() {
 /**
  * Get Users with given user roles and organic group.
  *
- * @param  int $rid The user rid
- * @param  int $gid The user gid
- * @return boolean true
+ * @param int $rid
+ *   The user rid
+ * @param int $gid
+ *   The user gid
+ *
+ * @return array
+ *   Returns a user object.
  */
 function _wetkit_og_get_users_on_role_and_group_basis($rid, $gid) {
   $users = entity_load('user');
-  foreach($users as $user) {
-    if(is_array($user->og_user_node)) {
+  foreach ($users as $user) {
+    if (is_array($user->og_user_node)) {
       if (array_key_exists($rid, $user->roles)) {
-        foreach($user->og_user_node['und'] as $key=>$values) {
-          if(in_array($gid,$values)) {
+        foreach ($user->og_user_node[LANGUAGE_NONE] as $key => $values) {
+          if (in_array($gid, $values)) {
             $get_user[] = $user;
           }
         }
       }
     }
   }
-  if(isset($get_user)) {
+  if (isset($get_user)) {
     return $get_user;
   }
   else {

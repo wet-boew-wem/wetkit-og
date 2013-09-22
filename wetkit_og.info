@@ -13,7 +13,6 @@ dependencies[] = og_ui
 dependencies[] = strongarm
 features[ctools][] = strongarm:strongarm:1
 features[features_api][] = api:2
-features[og_membership_type][] = wetkit_og
 features[variable][] = og_features_ignore_og_fields
 features[variable][] = og_group_manager_full_access
 features[variable][] = og_node_access_strict

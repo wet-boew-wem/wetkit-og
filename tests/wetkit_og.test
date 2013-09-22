@@ -8,7 +8,7 @@
 /**
  * Test case.
  */
-class Wetkit_OGTestCase extends DrupalWebTestCase {
+class WetKitOGTestCase extends DrupalWebTestCase {
 
   /**
    * Implements getInfo().
