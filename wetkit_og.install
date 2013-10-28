@@ -6,13 +6,6 @@
  */
 
 /**
- * Implements hook_install().
- */
-function wetkit_og_install() {
-
-}
-
-/**
  * Implements hook_uninstall().
  */
 function wetkit_og_uninstall() {
