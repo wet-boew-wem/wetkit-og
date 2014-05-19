@@ -5,6 +5,6 @@ core = 7.x
 
 ; Modules for WetKit Organic Groups
 
-projects[og][version] = 2.6
+projects[og][version] = 2.7
 projects[og][subdir] = contrib
 
